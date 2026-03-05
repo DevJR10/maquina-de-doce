@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máquina de Doces - Simulação AFD</title>
+    <link rel="stylesheet" href="../style/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Máquina de Doces</h1>
+        <p class="subtitle">Simulação com Autômato Finito Determinístico (AFD)</p>
+
+        <div class="maquina">
+            <!-- Parte superior: compartimento de doces (vidro transparente) -->
+            <div class="compartimento-doces">
+                <div class="doces-visual">
+                    <div class="doce-bola doce-a" title="Doce A - R$6,00"></div>
+                    <div class="doce-bola doce-b" title="Doce B - R$7,00"></div>
+                    <div class="doce-bola doce-c" title="Doce C - R$8,00"></div>
+                </div>
+                <div class="precos-sticker">
+                    <span>A: R$6</span> | <span>B: R$7</span> | <span>C: R$8</span>
+                </div>
+            </div>
+
+            <!-- Base da máquina -->
+            <div class="base">
+                <!-- Slot de moedas e botões de inserção -->
+                <div class="area-pagamento">
+                    <div class="slot-moeda">
+                        <span class="label-slot">Inserir notas/moedas</span>
+                        <div class="botoes-moeda">
+                            <button id="btn-1" class="btn-moeda" data-valor="1">R$ 1</button>
+                            <button id="btn-2" class="btn-moeda" data-valor="2">R$ 2</button>
+                            <button id="btn-5" class="btn-moeda" data-valor="5">R$ 5</button>
+                        </div>
+                    </div>
+                    <div class="display-saldo">
+                        Saldo: <span id="saldo">0,00</span>
+                    </div>
+                </div>
+
+                <!-- Botões de seleção de doces -->
+                <div class="area-selecao">
+                    <span class="label-selecao">Escolha o doce:</span>
+                    <button id="doce-a" class="btn-doce" data-doce="A" data-preco="6" disabled>Doce A</button>
+                    <button id="doce-b" class="btn-doce" data-doce="B" data-preco="7" disabled>Doce B</button>
+                    <button id="doce-c" class="btn-doce" data-doce="C" data-preco="8" disabled>Doce C</button>
+                </div>
+
+                <!-- Saída / dispensador -->
+                <div class="dispensador">
+                    <div class="boca-dispensador">
+                        <!-- Área do doce (esquerda) - com portinha -->
+                        <div class="area-doce-wrapper">
+                            <div class="portinha" id="portinha"></div>
+                            <div id="area-doce" class="area-doce">
+                                <span class="placeholder">Doce</span>
+                            </div>
+                        </div>
+                        <!-- Área dinheiro/troco (canto direito) -->
+                        <div class="area-dinheiro-troco">
+                            <div class="slot-label">Inserir dinheiro<br>Retirar troco</div>
+                            <div id="area-troco" class="area-troco">
+                                <span class="placeholder">R$ 1, 2 ou 5</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Área de resultado/status -->
+                <div id="resultado" class="resultado"></div>
+            </div>
+        </div>
+
+        <!-- Estado do AFD -->
+        <div class="afd-info">
+            <h3>Estado do AFD</h3>
+            <p>Estado atual: <strong id="estado-atual">q0 (R$ 0)</strong></p>
+            <p class="transicoes">Transições: Inserir R$1, R$2 ou R$5 → novo estado</p>
+        </div>
+    </div>
+
+    <script src="../src/script.js"></script>
+</body>
+
+</html>
