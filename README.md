@@ -1,6 +1,6 @@
 # Máquina de Doces - Simulação AFD
 
-Simulação interativa de uma máquina de doces com animações em JavaScript, funcionando como um **Autômato Finito Determinístico (AFD)** para fins didáticos.
+Simulação interativa de uma máquina de doces com animações em JavaScript, funcionando como um **Autômato Finito Determinístico (AFD)**.
 
 ![Máquina de Doces](https://img.shields.io/badge/Projeto-A3-blue) ![HTML](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white) ![CSS](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white) ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
 
@@ -71,6 +71,3 @@ Projeto A3 - Sweet Machine/
 - CSS3 (animações, flexbox, variáveis)
 - JavaScript (ES6+)
 
-## Licença
-
-Projeto acadêmico — uso livre para fins educacionais.
