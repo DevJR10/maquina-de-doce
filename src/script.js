@@ -1,21 +1,19 @@
 /**
- * MÁQUINA DE DOCES - Simulação AFD (Autômato Finito Determinístico)
+ * Penny Candie - Simulação AFD (Autômato Finito Determinístico)
  *
- * Estados: q0 (R$0), q1 (R$1), q2 (R$2), ..., q8 (R$8) - saldo acumulado
+ * Estado qN = saldo acumulado de N reais (sem teto — o saldo soma todas as inserções).
  * Alfabeto de entrada: {1, 2, 5} - valores em reais
- * Estados finais: Doce A/B/C sem troco, Doce A/B/C com troco
+ * Após comprar: volta a q0; troco = saldo antes da compra − preço do doce
  */
 
 const AFD = {
-    // Estados: q0 a q8 representam saldo de R$0 a R$8
-    estados: ['q0', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'q7', 'q8'],
     estadoInicial: 'q0',
     alfabeto: [1, 2, 5],
 
-    // Função de transição: (estado, símbolo) -> novoEstado
+    // Função de transição: (estado, símbolo) -> novoEstado (saldo acumulado em reais)
     transicao(estado, valor) {
-        const saldo = parseInt(estado.replace('q', ''), 10);
-        const novoSaldo = Math.min(saldo + valor, 8);
+        const saldo = parseInt(estado.replace(/^q/, ''), 10) || 0;
+        const novoSaldo = saldo + valor;
         return 'q' + novoSaldo;
     },
 
@@ -41,6 +39,9 @@ const elResultado = document.getElementById('resultado');
 const areaTroco = document.getElementById('area-troco');
 const areaDoce = document.getElementById('area-doce');
 const portinha = document.getElementById('portinha');
+const elFiguraVitrine = document.getElementById('figura-vitrine');
+
+const DUR_ANIM_BRACO_MS = 1550;
 
 const botoesMoeda = document.querySelectorAll('.btn-moeda');
 const botoesDoce = document.querySelectorAll('.btn-doce');
@@ -87,24 +88,18 @@ function animarMoeda(valor, elemento) {
 
 // Animação de doce saindo com portinha abrindo
 async function animarDoceSaindo(tipo) {
-    const cores = { A: '#e74c3c', B: '#3498db', C: '#2ecc71' };
-
-    // Abre a portinha
     portinha.classList.add('aberta');
 
     await new Promise(r => setTimeout(r, 400));
 
-    // Mostra o doce caindo
     areaDoce.innerHTML = '';
     const doce = document.createElement('div');
-    doce.className = 'doce-dispensado';
-    doce.style.background = `radial-gradient(circle at 30% 30%, white, ${cores[tipo]})`;
-    doce.style.boxShadow = 'inset -3px -3px 6px rgba(0,0,0,0.3)';
+    const formato = tipo === 'B' ? 'chocolate' : 'pirulito';
+    doce.className = `doce-dispensado doce-dispensado--${formato} doce-disp-${tipo.toLowerCase()}`;
     areaDoce.appendChild(doce);
 
     await new Promise(r => setTimeout(r, 800));
 
-    // Fecha a portinha
     portinha.classList.remove('aberta');
 }
 
@@ -160,22 +155,29 @@ async function comprar(doce) {
     const troco = saldo - preco;
     const resultadoFinal = obterResultadoFinal(doce, troco);
 
+    if (troco > 0 && elFiguraVitrine) {
+        elFiguraVitrine.classList.remove('animar-braco');
+        void elFiguraVitrine.offsetWidth;
+        elFiguraVitrine.classList.add('animar-braco');
+        setTimeout(() => elFiguraVitrine.classList.remove('animar-braco'), DUR_ANIM_BRACO_MS);
+    }
+
     // Animação: portinha abre, doce sai, troco (se houver)
     await animarDoceSaindo(doce);
 
     if (troco > 0) {
         animarTroco(troco);
     } else {
-        areaTroco.innerHTML = '<span class="placeholder">R$ 1, 2 ou 5</span>';
+        areaTroco.innerHTML = '';
     }
 
     await new Promise(r => setTimeout(r, 500));
 
     // Atualiza resultado
     if (troco > 0) {
-        elResultado.innerHTML = `<span style="color:#2ecc71; display: block;">✓ ${resultadoFinal}</span><br>Doce ${doce} + Troco R$ ${troco.toFixed(2).replace('.', ',')}`;
+        elResultado.innerHTML = `<div class="resultado-linhas"><span class="resultado-ok">✓ ${resultadoFinal}</span><span class="resultado-detalhe">Doce ${doce} + Troco R$ ${troco.toFixed(2).replace('.', ',')}</span></div>`;
     } else {
-        elResultado.innerHTML = `<span style="color:#2ecc71">✓ ${resultadoFinal}</span><br>Você recebeu o Doce ${doce}`;
+        elResultado.innerHTML = `<div class="resultado-linhas"><span class="resultado-ok">✓ ${resultadoFinal}</span><span class="resultado-detalhe">Você recebeu o Doce ${doce}</span></div>`;
     }
 
     // Reset para estado inicial
@@ -185,8 +187,8 @@ async function comprar(doce) {
 
     // Limpa dispensador após 3 segundos
     setTimeout(() => {
-        areaDoce.innerHTML = '<span class="placeholder">Doce</span>';
-        areaTroco.innerHTML = '<span class="placeholder">R$ 1, 2 ou 5</span>';
+        areaDoce.innerHTML = '<span class="placeholder">Saída</span>';
+        areaTroco.innerHTML = '';
         elResultado.textContent = 'Pronto para nova compra!';
         elResultado.style.color = '#fff';
     }, 3000);

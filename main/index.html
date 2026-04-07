@@ -4,79 +4,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Máquina de Doces - Simulação AFD</title>
+    <title>Penny Candie</title>
     <link rel="stylesheet" href="../style/style.css">
 </head>
 
 <body>
-    <div class="container">
-        <h1>Máquina de Doces</h1>
-        <p class="subtitle">Simulação com Autômato Finito Determinístico (AFD)</p>
+    <div class="container vitrine-page">
+        <header class="vitrine-cabecalho">
+            <h1>Penny Candie</h1>
+        </header>
 
-        <div class="maquina">
-            <!-- Parte superior: compartimento de doces (vidro transparente) -->
-            <div class="compartimento-doces">
-                <div class="doces-visual">
-                    <div class="doce-bola doce-a" title="Doce A - R$6,00"></div>
-                    <div class="doce-bola doce-b" title="Doce B - R$7,00"></div>
-                    <div class="doce-bola doce-c" title="Doce C - R$8,00"></div>
+        <div class="vitrine-mostruario">
+            <aside class="vitrine-painel-figura" aria-label="Ilustração decorativa do mostruário">
+                <div class="placa-envelhecida">
+                    <span class="placa-ano">Est. 1952</span>
+                    <span class="placa-nome">Penny Candie</span>
                 </div>
-                <div class="precos-sticker">
-                    <span>A: R$6</span> | <span>B: R$7</span> | <span>C: R$8</span>
-                </div>
-            </div>
+                <figure class="figura-vitrine" id="figura-vitrine">
+                    <svg class="vitrine-pessoa" viewBox="0 0 160 240" xmlns="http://www.w3.org/2000/svg" role="img"
+                        aria-labelledby="titulo-figura">
+                        <title id="titulo-figura">Cliente em frente à vitrine</title>
+                        <ellipse cx="82" cy="228" rx="48" ry="6" fill="rgba(44,24,16,0.25)" />
+                        <path d="M52 98 L108 98 L118 188 L42 188 Z" fill="#5c2436" stroke="#2c1810" stroke-width="1.2" />
+                        <path d="M58 98 L102 98 L98 120 L62 120 Z" fill="#f0dcc8" opacity="0.9" />
+                        <path d="M42 188 L118 188 L112 210 L48 210 Z" fill="#3d1f2e" />
+                        <rect x="58" y="205" width="14" height="22" rx="2" fill="#2c1810" />
+                        <rect x="88" y="205" width="14" height="22" rx="2" fill="#2c1810" />
+                        <ellipse cx="65" cy="228" rx="12" ry="5" fill="#1a0f0a" />
+                        <ellipse cx="95" cy="228" rx="12" ry="5" fill="#1a0f0a" />
+                        <path d="M52 108 Q28 118 22 138 Q20 148 32 152 L44 145 Q38 130 58 118 Z" fill="#e8c4a0"
+                            stroke="#c49a7a" stroke-width="0.8" />
+                        <g class="braco-alcance">
+                            <path d="M108 108 Q128 125 132 145 L120 150 Q115 128 108 118 Z" fill="#e8c4a0"
+                                stroke="#c49a7a" stroke-width="0.8" />
+                        </g>
+                        <rect x="72" y="82" width="16" height="18" fill="#e8c4a0" />
+                        <ellipse cx="80" cy="68" rx="24" ry="28" fill="#e8c4a0" stroke="#c49a7a" stroke-width="1" />
+                        <path d="M56 62 Q52 40 80 32 Q108 40 104 62 Q100 48 80 44 Q60 48 56 62 Z" fill="#2c1810" />
+                        <ellipse cx="80" cy="38" rx="34" ry="10" fill="#8b2942" stroke="#4a1524" stroke-width="1" />
+                        <path d="M52 38 Q80 18 108 38 L104 52 Q80 46 56 52 Z" fill="#a8324a" stroke="#4a1524"
+                            stroke-width="0.8" />
+                        <circle cx="72" cy="68" r="2.5" fill="#2c1810" />
+                        <circle cx="88" cy="68" r="2.5" fill="#2c1810" />
+                        <path d="M74 78 Q80 84 86 78" fill="none" stroke="#8b5a45" stroke-width="1.2"
+                            stroke-linecap="round" />
+                    </svg>
+                </figure>
+                <p class="figura-legenda">Convidamos a experimentar a máquina ao lado →</p>
+            </aside>
 
-            <!-- Base da máquina -->
-            <div class="base">
-                <!-- Slot de moedas e botões de inserção -->
-                <div class="area-pagamento">
-                    <div class="slot-moeda">
-                        <span class="label-slot">Inserir notas/moedas</span>
-                        <div class="botoes-moeda">
-                            <button id="btn-1" class="btn-moeda" data-valor="1">R$ 1</button>
-                            <button id="btn-2" class="btn-moeda" data-valor="2">R$ 2</button>
-                            <button id="btn-5" class="btn-moeda" data-valor="5">R$ 5</button>
-                        </div>
-                    </div>
-                    <div class="display-saldo">
-                        Saldo: <span id="saldo">0,00</span>
-                    </div>
-                </div>
-
-                <!-- Botões de seleção de doces -->
-                <div class="area-selecao">
-                    <span class="label-selecao">Escolha o doce:</span>
-                    <button id="doce-a" class="btn-doce" data-doce="A" data-preco="6" disabled>Doce A</button>
-                    <button id="doce-b" class="btn-doce" data-doce="B" data-preco="7" disabled>Doce B</button>
-                    <button id="doce-c" class="btn-doce" data-doce="C" data-preco="8" disabled>Doce C</button>
-                </div>
-
-                <!-- Saída / dispensador -->
-                <div class="dispensador">
-                    <div class="boca-dispensador">
-                        <!-- Área do doce (esquerda) - com portinha -->
-                        <div class="area-doce-wrapper">
-                            <div class="portinha" id="portinha"></div>
-                            <div id="area-doce" class="area-doce">
-                                <span class="placeholder">Doce</span>
+            <div class="vitrine-col-maquina">
+                <div class="moldura-madeira">
+                    <div class="filete-latao" aria-hidden="true"></div>
+                    <div class="maquina">
+                        <div class="compartimento-doces">
+                            <div class="doces-visual">
+                                <div class="doce-vitrine doce-vitrine--pirulito doce-a" title="Doce A — pirulito R$6"></div>
+                                <div class="doce-vitrine doce-vitrine--chocolate doce-b" title="Doce B — chocolate R$7"></div>
+                                <div class="doce-vitrine doce-vitrine--pirulito doce-c" title="Doce C — pirulito R$8"></div>
+                            </div>
+                            <div class="precos-sticker">
+                                <span>A: R$6</span><span class="sep" aria-hidden="true">|</span><span>B: R$7</span><span class="sep" aria-hidden="true">|</span><span>C: R$8</span>
                             </div>
                         </div>
-                        <!-- Área dinheiro/troco (canto direito) -->
-                        <div class="area-dinheiro-troco">
-                            <div class="slot-label">Inserir dinheiro<br>Retirar troco</div>
-                            <div id="area-troco" class="area-troco">
-                                <span class="placeholder">R$ 1, 2 ou 5</span>
+
+                        <div class="base">
+                            <div class="area-pagamento">
+                                <div class="slot-moeda">
+                                    <span class="label-slot">Inserir notas/moedas</span>
+                                    <div class="botoes-moeda">
+                                        <button id="btn-1" class="btn-moeda" data-valor="1">R$ 1</button>
+                                        <button id="btn-2" class="btn-moeda" data-valor="2">R$ 2</button>
+                                        <button id="btn-5" class="btn-moeda" data-valor="5">R$ 5</button>
+                                    </div>
+                                </div>
+                                <div class="display-saldo">
+                                    Saldo: <span id="saldo">0,00</span>
+                                </div>
                             </div>
+
+                            <div class="area-selecao">
+                                <span class="label-selecao">Escolha o doce:</span>
+                                <button id="doce-a" class="btn-doce" data-doce="A" data-preco="6" disabled>Doce A</button>
+                                <button id="doce-b" class="btn-doce" data-doce="B" data-preco="7" disabled>Doce B</button>
+                                <button id="doce-c" class="btn-doce" data-doce="C" data-preco="8" disabled>Doce C</button>
+                            </div>
+
+                            <div class="dispensador">
+                                <div class="boca-dispensador">
+                                    <div class="area-doce-wrapper">
+                                        <div class="portinha" id="portinha"></div>
+                                        <div id="area-doce" class="area-doce">
+                                            <span class="placeholder">Saída</span>
+                                        </div>
+                                    </div>
+                                    <div class="area-dinheiro-troco" aria-label="Saída do troco">
+                                        <div id="area-troco" class="area-troco"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="resultado" class="resultado"></div>
                         </div>
                     </div>
                 </div>
-
-                <!-- Área de resultado/status -->
-                <div id="resultado" class="resultado"></div>
             </div>
         </div>
 
-        <!-- Estado do AFD -->
         <div class="afd-info">
             <h3>Estado do AFD</h3>
             <p>Estado atual: <strong id="estado-atual">q0 (R$ 0)</strong></p>
